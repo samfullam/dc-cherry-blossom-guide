@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DC Cherry Blossoms — Spring 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   :root {
     --cream: #FAF6F0;
@@ -442,6 +444,180 @@
   }
   .fade-in.visible { opacity: 1; transform: translateY(0); }
 
+  /* ─── BLOOM PROGRESS TIMELINE ─── */
+  .timeline-strip-wrap {
+    margin: 32px 0 0;
+  }
+
+  .timeline-strip {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    padding: 20px 0 52px;
+  }
+
+  .timeline-line {
+    position: absolute;
+    top: 42px;
+    left: 6.25%;
+    right: 6.25%;
+    height: 2px;
+    background: var(--pink-pale);
+    z-index: 0;
+  }
+
+  .timeline-node-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .timeline-node {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    position: relative;
+  }
+
+  .timeline-node.past {
+    background: var(--pink);
+    border: 2px solid var(--pink);
+  }
+
+  .timeline-node.current {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+    background: var(--pink-vivid);
+    border: 3px solid var(--pink-vivid);
+    animation: pulseRing 2s ease-in-out infinite;
+  }
+
+  .timeline-node.future {
+    background: transparent;
+    border: 2px solid var(--pink-pale);
+  }
+
+  @keyframes pulseRing {
+    0%   { box-shadow: 0 0 0 0 rgba(217, 79, 110, 0.4); }
+    70%  { box-shadow: 0 0 0 14px rgba(217, 79, 110, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(217, 79, 110, 0); }
+  }
+
+  .timeline-name {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 10px;
+    line-height: 1.4;
+    max-width: 80px;
+  }
+
+  .timeline-name.past   { color: var(--pink-deep); font-weight: 500; }
+  .timeline-name.current { color: var(--pink-vivid); font-weight: 500; }
+  .timeline-name.future  { color: rgba(107, 94, 88, 0.45); }
+
+  .you-are-here {
+    position: absolute;
+    top: calc(100% + 8px);
+    white-space: nowrap;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--pink-vivid);
+    font-weight: 500;
+    padding: 2px 8px;
+    border: 1px solid rgba(217, 79, 110, 0.35);
+    border-radius: 2px;
+  }
+
+  .timeline-updated {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* ─── LEAFLET MAP ─── */
+  #blossom-map {
+    height: 420px;
+    border-radius: 2px;
+    margin: 32px 0;
+    border: 1px solid rgba(200,160,160,0.25);
+  }
+
+  .blossom-marker {
+    width: 32px;
+    height: 32px;
+    background: var(--pink-deep);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garant', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.7);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 2px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12) !important;
+    border: 1px solid rgba(200,160,160,0.3) !important;
+  }
+
+  .blossom-popup .popup-num {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--pink-pale);
+    line-height: 1;
+  }
+
+  .blossom-popup .popup-name {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 2px 0 4px;
+  }
+
+  .blossom-popup .popup-meta {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .blossom-popup .popup-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .blossom-popup .popup-tag {
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border: 1px solid var(--pink);
+    color: var(--pink-deep);
+    border-radius: 1px;
+  }
+
   /* ─── RESPONSIVE ─── */
   @media (max-width: 640px) {
     nav { padding: 14px 20px; }
@@ -455,6 +631,10 @@
     .bar-track { margin-right: 0; }
     .location-item { grid-template-columns: 36px 1fr; }
     .location-item > :last-child { grid-column: 2; }
+    .timeline-strip-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 32px -20px 0; padding: 0 20px; }
+    .timeline-strip { min-width: max-content; }
+    .timeline-node-wrap { flex: none; width: 80px; }
+    #blossom-map { height: 300px; }
   }
 </style>
 </head>
@@ -464,6 +644,7 @@
 <nav>
   <div class="nav-logo">DC · Cherry Blossom Watch · 2026</div>
   <div class="nav-links">
+    <a href="#progress">Progress</a>
     <a href="#forecast">Forecast</a>
     <a href="#history">History</a>
     <a href="#stages">Stages</a>
@@ -514,6 +695,18 @@
     </div>
   </div>
 </div>
+
+<!-- BLOOM PROGRESS -->
+<section id="progress">
+  <div class="section-eyebrow">Live Season Status</div>
+  <h2 class="section-title">Where Are We in the <em>Bloom</em>?</h2>
+  <p class="lead">Track the trees from early spring through peak bloom and beyond.</p>
+
+  <div class="timeline-strip-wrap fade-in">
+    <div class="timeline-strip" id="bloom-timeline-track"></div>
+  </div>
+  <p class="timeline-updated" id="timeline-updated"></p>
+</section>
 
 <!-- FORECAST -->
 <section id="forecast">
@@ -649,7 +842,7 @@
       <div class="bar-row">
         <span class="bar-year">2024</span>
         <div class="bar-track">
-          <div class="bar-fill highlight" style="width:6%;left:0;"><div class="bar-date"><strong>March 17</strong> — 2nd earliest on record</div></div>
+          <div class="bar-fill highlight" style="width:6%;left:0;"><div class="bar-date" style="left:calc(100% + 8px);right:auto;"><strong>March 17</strong> — 2nd earliest on record</div></div>
         </div>
       </div>
       <div class="bar-row">
@@ -748,6 +941,8 @@
   <div class="section-eyebrow">Where to Go</div>
   <h2 class="section-title">Premier <em>Blossom</em> Locations</h2>
   <p class="lead">DC's cherry trees grow in three primary NPS locations, plus several lesser-known spots. Each spot has its own character and crowd profile.</p>
+
+  <div id="blossom-map"></div>
 
   <div class="locations-list fade-in">
 
@@ -946,17 +1141,109 @@
 </footer>
 
 <script>
-  // Intersection observer for fade-in
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
+  // ─── CONFIG (update currentStage as season advances) ───
+  // 0 = Green Buds … 5 = Peak Bloom … 7 = Green Leaves
+  const BLOOM_CONFIG = {
+    currentStage: 0,
+    lastUpdated: "Feb 28, 2026"
+  };
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  const BLOOM_STAGES = [
+    { name: "Green Buds",          icon: "🌿",  desc: "First green tips appear on branch tips." },
+    { name: "Florets Visible",     icon: "🔍",  desc: "Individual flower clusters become distinguishable." },
+    { name: "Florets Extended",    icon: "📏",  desc: "Florets elongate; pale color shows through green." },
+    { name: "Peduncle Elongation", icon: "🌱",  desc: "Flower stems stretch; blossoms become flower-shaped." },
+    { name: "Puffy White",         icon: "🤍",  desc: "Nearly open, puffy and white. 1–3 days from peak." },
+    { name: "Peak Bloom",          icon: "🌸",  desc: "70%+ Yoshinos open. The moment everyone's chasing." },
+    { name: "Petals Falling",      icon: "🍃",  desc: "Hanafubuki — petal snow drifting on the wind." },
+    { name: "Green Leaves",        icon: "🌳",  desc: "Blossoms replaced by fresh green foliage." }
+  ];
+
+  const MAP_LOCATIONS = [
+    { num: "01", name: "Tidal Basin",                        lat: 38.8820, lng: -77.0430, meta: "West Potomac Park",          tags: ["Yoshino · Primary", "Sunrise Magic"] },
+    { num: "02", name: "East Potomac Park / Hains Point",    lat: 38.8660, lng: -77.0371, meta: "SW Washington DC",           tags: ["Kwanzan · Later Bloom", "Lower Crowds"] },
+    { num: "03", name: "Washington Monument Grounds",        lat: 38.8895, lng: -77.0353, meta: "National Mall",              tags: ["Monument Views"] },
+    { num: "04", name: "Kenilworth Park & Aquatic Gardens",  lat: 38.9136, lng: -76.9475, meta: "NE Washington DC",           tags: ["Multi-Season", "July Lotus"] },
+    { num: "05", name: "Enid A. Haupt Garden",               lat: 38.8876, lng: -77.0261, meta: "National Mall · Smithsonian",tags: ["Saucer Magnolias First", "Low Crowds"] },
+    { num: "06", name: "Rawlins Park",                       lat: 38.9078, lng: -77.0472, meta: "Dupont Circle Area",         tags: ["Local Secret", "Early Preview"] }
+  ];
+
+  // ─── TIMELINE ───
+  function renderTimeline() {
+    const track = document.getElementById('bloom-timeline-track');
+    const updated = document.getElementById('timeline-updated');
+    if (!track) return;
+
+    const { currentStage, lastUpdated } = BLOOM_CONFIG;
+    let html = '<div class="timeline-line"></div>';
+
+    BLOOM_STAGES.forEach((stage, i) => {
+      const state = i < currentStage ? 'past' : (i === currentStage ? 'current' : 'future');
+      const youAreHere = i === currentStage
+        ? '<span class="you-are-here">YOU ARE HERE</span>'
+        : '';
+      html += `
+        <div class="timeline-node-wrap">
+          <div class="timeline-node ${state}">${stage.icon}</div>
+          <div class="timeline-name ${state}">${stage.name}</div>
+          ${youAreHere}
+        </div>`;
+    });
+
+    track.innerHTML = html;
+    if (updated) updated.textContent = 'Last updated: ' + lastUpdated;
+  }
+
+  // ─── MAP ───
+  function initMap() {
+    if (typeof L === 'undefined' || !document.getElementById('blossom-map')) return;
+
+    const map = L.map('blossom-map', { center: [38.889, -77.025], zoom: 13 });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CartoDB</a>',
+      maxZoom: 19
+    }).addTo(map);
+
+    MAP_LOCATIONS.forEach(loc => {
+      const icon = L.divIcon({
+        className: '',
+        html: `<div class="blossom-marker">${loc.num}</div>`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -20]
+      });
+
+      const tagsHtml = loc.tags.map(t => `<span class="popup-tag">${t}</span>`).join('');
+      const popupContent = `
+        <div class="blossom-popup">
+          <div class="popup-num">${loc.num}</div>
+          <div class="popup-name">${loc.name}</div>
+          <div class="popup-meta">${loc.meta}</div>
+          <div class="popup-tags">${tagsHtml}</div>
+        </div>`;
+
+      L.marker([loc.lat, loc.lng], { icon }).addTo(map).bindPopup(popupContent);
+    });
+  }
+
+  // ─── INIT ───
+  document.addEventListener('DOMContentLoaded', () => {
+    renderTimeline();
+    initMap();
+
+    // Intersection observer for fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  });
 </script>
 
 </body>
