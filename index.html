@@ -145,7 +145,7 @@
   /* ─── SECTIONS ─── */
   section {
     max-width: 900px; margin: 0 auto;
-    padding: 48px 32px;
+    padding: 28px 32px;
   }
 
   .section-eyebrow {
@@ -380,21 +380,14 @@
   }
   .fact-body strong { color: var(--navy-soft); font-weight: 500; }
 
-  /* ─── BLOCKQUOTE ─── */
-  blockquote {
-    border-left: 3px solid var(--pink);
-    padding: 20px 28px; margin: 32px 0;
-    background: rgba(249,213,220,0.15);
+  /* ─── RESPONSIVE IFRAME ─── */
+  .iframe-wrap {
+    position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+    margin: 16px 0; border-radius: 2px;
+    border: 1px solid rgba(200,160,160,0.25);
   }
-  blockquote p {
-    font-family: 'Cormorant Garant', serif;
-    font-size: 20px; font-style: italic; font-weight: 300;
-    color: var(--navy-soft); line-height: 1.6;
-  }
-  blockquote cite {
-    display: block; margin-top: 10px;
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--text-muted); font-style: normal;
+  .iframe-wrap iframe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
   }
 
   /* ─── TECH TOOLS ─── */
@@ -622,7 +615,7 @@
   @media (max-width: 640px) {
     nav { padding: 14px 20px; }
     .nav-links { display: none; }
-    section { padding: 40px 20px; }
+    section { padding: 24px 20px; }
     .facts-grid, .tools-grid { grid-template-columns: 1fr; }
     .stages-grid { grid-template-columns: 1fr 1fr; }
     .forecast-banner { padding: 28px; }
@@ -739,13 +732,6 @@
     <strong>Peak bloom refers to 70% of Yoshino blossoms being open</strong>. Once declared, the window typically lasts 3–7 days, weather permitting. A warm spell, rain, or wind can strip petals overnight or rush the cycle. The days <em>before</em> peak are often just as stunning, with fewer crowds.
   </p>
 
-  <blockquote>
-    <p>“What a strange thing!</p> 
-    <p>to be alive</p> 
-    <p>beneath cherry blossoms”</p>
-
-    <p> -Kobayashi Issa</p>
-  </blockquote>
 </section>
 
 <!-- HISTORICAL -->
@@ -845,7 +831,7 @@
       <div class="bar-row">
         <span class="bar-year">2025</span>
         <div class="bar-track">
-          <div class="bar-fill highlight" style="width:38%;left:0;"><div class="bar-date"><strong>March 28</strong></div></div>
+          <div class="bar-fill" style="width:38%;left:0;"><div class="bar-date"><strong>March 28</strong></div></div>
         </div>
       </div>
       <div class="bar-row">
@@ -1037,6 +1023,54 @@
       </div>
     </div>
 
+    <div class="location-item">
+      <div class="location-num">07</div>
+      <div class="location-body">
+        <div class="location-name">Capitol Grounds</div>
+        <div class="location-meta">Capitol Hill · East &amp; West Fronts</div>
+        <div class="location-desc">
+          Cherry trees line the paths around the Capitol's East and West Fronts. The East Front plaza has a cluster of Yoshinos that bloom alongside the iconic dome backdrop — an underused vantage with easy Metro access from Capitol South. Crowds are a fraction of the Tidal Basin, and the architectural framing is unmatched.
+        </div>
+        <div class="location-tags">
+          <span class="tag-chip">Monument Views</span>
+          <span class="tag-chip">Metro Access</span>
+          <span class="tag-chip yellow">Low Crowds</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="location-item">
+      <div class="location-num">08</div>
+      <div class="location-body">
+        <div class="location-name">Dumbarton Oaks</div>
+        <div class="location-meta">Georgetown · R St NW</div>
+        <div class="location-desc">
+          A 27-acre historic garden in Georgetown with a Japanese-influenced terrace and cherry trees that bloom slightly ahead of the Tidal Basin due to the sheltered microclimate. Small admission fee, but delivers near-zero crowds and impeccably maintained grounds. The formal garden design makes for exceptional photography even on cloudy days.
+        </div>
+        <div class="location-tags">
+          <span class="tag-chip yellow">Early Bloom</span>
+          <span class="tag-chip">Georgetown</span>
+          <span class="tag-chip">Admission Required</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="location-item">
+      <div class="location-num">09</div>
+      <div class="location-body">
+        <div class="location-name">US National Arboretum</div>
+        <div class="location-meta">NE Washington DC · New York Ave NE</div>
+        <div class="location-desc">
+          446 acres of ornamental trees and shrubs including multiple cherry varieties across sweeping hillsides. The Azalee Collection and National Bonsai pavilion are peak-season bonuses. This place is essentially unknown to casual visitors — free parking, tranquil trails, and a level of variety you won't find anywhere else in the city. The Glenn Dale Azaleas typically peak alongside or just after the cherries.
+        </div>
+        <div class="location-tags">
+          <span class="tag-chip">Multiple Varieties</span>
+          <span class="tag-chip yellow">Free Parking</span>
+          <span class="tag-chip">Low Crowds</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1090,14 +1124,18 @@
       <span class="tool-name">Live Monitoring</span>
       <div class="tool-title">NPS Bloom Watch + BloomCam</div>
       <div class="tool-desc">The National Park Service runs the official bloom stage tracker and a live BloomCam pointed at the Tidal Basin. This is the authoritative source. Stage updates post when conditions change, typically every few days leading up to peak.</div>
+      <div class="iframe-wrap">
+        <iframe src="https://www.nps.gov/cherry/bloomcam.htm" title="NPS BloomCam — Live Tidal Basin Camera" allowfullscreen loading="lazy"></iframe>
+      </div>
       <a class="tool-link" href="https://www.nps.gov/subjects/cherryblossom/bloom-watch.htm" target="_blank">nps.gov/cherryblossom →</a>
-      <a class="tool-link" href="https://www.bloomcam.org" target="_blank">bloomcam.org →</a>
+      <a class="tool-link" href="https://www.bloomcam.org" target="_blank" style="display:block; margin-top:4px;">bloomcam.org →</a>
     </div>
     <div class="tool-card">
       <span class="tool-name">Independent Tracking</span>
       <div class="tool-title">Cherry Blossom Watch</div>
       <div class="tool-desc">Independently run photo-based tracker updated frequently with on-the-ground observations. Aggregates all major forecasts (NPS, Washington Post, Storm Team 4) in one place. Often updated more frequently than the NPS page during the approach to peak.</div>
       <a class="tool-link" href="https://cherryblossomwatch.com" target="_blank">cherryblossomwatch.com →</a>
+      <a class="tool-link" href="https://cherryblossomwatch.substack.com/" target="_blank" style="display:block; margin-top:4px;">Subscribe to email updates →</a>
     </div>
     <div class="tool-card">
       <span class="tool-name">Flock Migration Intelligence</span>
@@ -1149,7 +1187,10 @@
     { num: "03", name: "Washington Monument Grounds",        lat: 38.8895, lng: -77.0353, meta: "National Mall",              tags: ["Monument Views"] },
     { num: "04", name: "Kenilworth Park & Aquatic Gardens",  lat: 38.9136, lng: -76.9475, meta: "NE Washington DC",           tags: ["Multi-Season", "July Lotus"] },
     { num: "05", name: "Enid A. Haupt Garden",               lat: 38.8876, lng: -77.0261, meta: "National Mall · Smithsonian",tags: ["Saucer Magnolias First", "Low Crowds"] },
-    { num: "06", name: "Rawlins Park",                       lat: 38.9078, lng: -77.0472, meta: "Dupont Circle Area",         tags: ["Local Secret", "Early Preview"] }
+    { num: "06", name: "Rawlins Park",                       lat: 38.9078, lng: -77.0472, meta: "Dupont Circle Area",         tags: ["Local Secret", "Early Preview"] },
+    { num: "07", name: "Capitol Grounds",                    lat: 38.8899, lng: -77.0091, meta: "Capitol Hill",               tags: ["Monument Views", "Metro Access"] },
+    { num: "08", name: "Dumbarton Oaks",                     lat: 38.9143, lng: -77.0616, meta: "Georgetown · R St NW",       tags: ["Early Bloom", "Georgetown"] },
+    { num: "09", name: "US National Arboretum",              lat: 38.9097, lng: -76.9678, meta: "NE Washington DC",           tags: ["Multiple Varieties", "Free Parking"] }
   ];
 
   // ─── TIMELINE ───
